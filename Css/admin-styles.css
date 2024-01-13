@@ -11,11 +11,6 @@ body {
 
 /* Use the dynamically generated color variables in your styles */
 /* Example: */
-.custom-header {
-    background-color: var(--color_dark_5);
-    color: var(--color_light_10);
-}
-
 #wpcontent {
 	background: var(--color_light_3);
 	padding: 1rem;			
