@@ -1,42 +1,44 @@
 <?php
+
 // Function to generate color palette
 function easyui_pro_generate_color_palette($base_color) {
-	$palette = [];
+    $palette = [];
 
-	// Define the number of tones in the palette
-	$num_tones = 15;
+    // Define the number of tones in the palette
+    $num_tones = 15;
 
-	// Convert base color to RGB
-	list($r, $g, $b) = sscanf($base_color, "#%02x%02x%02x");
+    // Convert base color to RGB
+    list($r, $g, $b) = sscanf($base_color, "#%02x%02x%02x");
 
-	// Calculate step size for darkening/lightening
-	$step = 30;
+    // Calculate step size for lightening
+    $lighten_step = 100 / $num_tones;
 
-	// Generate color tones
-	for ($i = 1; $i <= $num_tones; $i++) {
-		$percentage = $i / $num_tones;
+    // Generate color tones
+    for ($i = 0; $i <= $num_tones; $i++) {
+        // Calculate lightening percentage
+        $lighten_percentage = $i * $lighten_step;
 
-		// Darken the color
-		$darken_r = max(0, $r - $step * $percentage);
-		$darken_g = max(0, $g - $step * $percentage);
-		$darken_b = max(0, $b - $step * $percentage);
+        // Lighten the color
+        $lighten_r = round($r + ($lighten_percentage / 100) * (255 - $r));
+        $lighten_g = round($g + ($lighten_percentage / 100) * (255 - $g));
+        $lighten_b = round($b + ($lighten_percentage / 100) * (255 - $b));
 
-		// Lighten the color
-		$lighten_r = min(255, $r + $step * $percentage);
-		$lighten_g = min(255, $g + $step * $percentage);
-		$lighten_b = min(255, $b + $step * $percentage);
+        // Format the color values as hexadecimal
+        $lighten_color = sprintf("#%02x%02x%02x", $lighten_r, $lighten_g, $lighten_b);
 
-		// Format the color values as hexadecimal
-		$darken_color = sprintf("#%02x%02x%02x", $darken_r, $darken_g, $darken_b);
-		$lighten_color = sprintf("#%02x%02x%02x", $lighten_r, $lighten_g, $lighten_b);
+        // Assign the colors to the palette
+        $palette["color_light_{$i}"] = $lighten_color;
+    }
 
-		// Assign the colors to the palette
-		$palette["color_dark_{$i}"] = $darken_color;
-		$palette["color_light_{$i}"] = $lighten_color;
-	}
-
-	return $palette;
+    return $palette;
 }
+
+
+// Enqueue the custom JavaScript file
+function easyui_pro_enqueue_custom_script() {
+    wp_enqueue_script('easyui-pro-custom-script', plugin_dir_url(__FILE__) . 'custom-admin-script.js', array('jquery'), null, true);
+}
+
 
 // Admin settings page
 function easyui_pro_settings_page() {
@@ -52,6 +54,10 @@ function easyui_pro_settings_page() {
 	</form>
 </div>
 <?php
+
+// Enqueue the custom JavaScript file
+add_action('admin_enqueue_scripts', 'easyui_pro_enqueue_custom_script');
+
 }
 
 // Register settings
@@ -88,11 +94,18 @@ function easyui_pro_dynamic_styles() {
 	$secondary_palette = easyui_pro_generate_color_palette($secondary_base_color);
 	$tertiary_palette = easyui_pro_generate_color_palette($tertiary_base_color);
 
+
 	$css = ":root {\n";
-	foreach (array_merge($primary_palette, $secondary_palette, $tertiary_palette) as $key => $value) {
-		$css .= "    --{$key}: {$value};\n";
-	}
-	$css .= "}\n";
+		foreach ($primary_palette as $key => $value) {
+			$css .= "    --primary_{$key}: {$value};\n";
+		}
+		foreach ($secondary_palette as $key => $value) {
+			$css .= "    --secondary_{$key}: {$value};\n";
+		}
+		foreach ($tertiary_palette as $key => $value) {
+			$css .= "    --tertiary_{$key}: {$value};\n";
+		}
+		$css .= "}\n";
 
 	// Create a temporary stylesheet file
 	$upload_dir = wp_upload_dir();
