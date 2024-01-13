@@ -12,12 +12,12 @@ body {
 /* Use the dynamically generated color variables in your styles */
 /* Example: */
 #wpcontent {
-	background: var(--color_light_3);
+	background: var(--color_light_1);
 	padding: 1rem;			
 }
 
 #wpbody {
-	background: var(--color_light_6);
+	background: var(--color_dark_5);
 	border-radius: 1rem;
 	padding: 1rem;
 	border: 1px solid #C7C8B8;
