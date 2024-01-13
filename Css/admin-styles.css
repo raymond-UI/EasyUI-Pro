@@ -11,13 +11,32 @@ body {
 
 /* Use the dynamically generated color variables in your styles */
 /* Example: */
+
+#adminmenu {
+	background: var(--tertiary_color_light_0);
+	border-radius: 1rem;
+	overflow: hidden;
+}
+
+#wpadminbar {
+	background-color: var(--secondary_color_light_0)
+}
+
+#adminmenuback {
+	background: #fcfaf2;
+}
+#adminmenuwrap {
+	 background: #fcfaf2;
+	padding: 0.15rem;
+}
+
 #wpcontent {
-	background: var(--color_light_1);
+	background: var(--primary_color_light_14);
 	padding: 1rem;			
 }
 
 #wpbody {
-	background: var(--color_dark_5);
+	background: var(--primary_color_light_12);
 	border-radius: 1rem;
 	padding: 1rem;
 	border: 1px solid #C7C8B8;
