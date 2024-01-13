@@ -1,0 +1,35 @@
+/* admin-styles.css */
+
+/* Import the dynamically generated styles */
+@import url('https://sumptuous-alligator-e54c21.instawp.xyz/wp-content/uploads/easyui-pro-dynamic.css');
+
+/* Add your custom CSS styles here */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Use the dynamically generated color variables in your styles */
+/* Example: */
+.custom-header {
+    background-color: var(--color_dark_5);
+    color: var(--color_light_10);
+}
+
+#wpcontent {
+	background: var(--color_light_3);
+	padding: 1rem;			
+}
+
+#wpbody {
+	background: var(--color_light_6);
+	border-radius: 1rem;
+	padding: 1rem;
+	border: 1px solid #C7C8B8;
+	height: stretch;
+	margin-left: 1rem;
+	overflow: hidden;
+
+}
+
+/* Add more styles as needed, using the dynamically generated color variables */
