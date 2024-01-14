@@ -4,11 +4,18 @@
 @import url('https://sumptuous-alligator-e54c21.instawp.xyz/wp-content/uploads/easyui-pro-dynamic.css');
 
 /* Add your custom CSS styles here */
-body {
-    background-color: var(--background-color);
-    color: var(--text-color);
-}
+.reset {
+	all: unset;
+  }
 
+
+.form-table {
+	border-radius: 0.5rem;
+	padding: 1rem;
+	display: flex;
+	flex-grow: 0;
+	background: #fcfaf2;
+}
 /* Use the dynamically generated color variables in your styles */
 /* Example: */
 
@@ -23,24 +30,32 @@ body {
 }
 
 #adminmenuback {
-	background: #fcfaf2;
+	background: var(--primary_color_light_18);
 }
 #adminmenuwrap {
-	 background: #fcfaf2;
-	padding: 0.15rem;
+	background: 0.0;
+	padding-left: 0.25rem;
+}
+
+.wrap {
+    margin: 10px 20px 0 2px;
+}
+
+#wpwrap {
+	background: var(--primary_color_light_18);
 }
 
 #wpcontent {
-	background: var(--primary_color_light_14);
+	/* display: flex; */
+	/* width: 100%; */
 	padding: 1rem;			
 }
 
 #wpbody {
-	background: var(--primary_color_light_12);
+	background: var(--primary_color_light_16);
 	border-radius: 1rem;
 	padding: 1rem;
 	border: 1px solid #C7C8B8;
-	margin-left: 1rem;
 	overflow: hidden;
 
 }

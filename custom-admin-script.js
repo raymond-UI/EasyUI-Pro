@@ -1,58 +1,17 @@
-// custom-admin-script.js
+// jQuery(document).ready(function($) {
+//     // Function to update color pickers dynamically
+//     function updateColorPickers(initialColors) {
+//         $('#primary_base_color').val(initialColors.primary).trigger('input');
+//         $('#secondary_base_color').val(initialColors.secondary).trigger('input');
+//         $('#tertiary_base_color').val(initialColors.tertiary).trigger('input');
+//     }
 
-jQuery(document).ready(function ($) {
-    // Object to store previous color values
-    var previousColors = {
-        primary: '',
-        secondary: '',
-        tertiary: ''
-    };
+//     // Call the function with initial colors
+//     updateColorPickers(easyuiProInitialColors);
 
-    // Function to update color picker values
-    function updateColorPicker(baseColor) {
-        // Get the new color value from the CSS variable
-        var newColor = getComputedStyle(document.documentElement).getPropertyValue('--' + baseColor + '_color_light_15').trim();
-
-        // If the new color is not white, update the color picker value
-        if (newColor !== '#ffffff') {
-            // Select the color picker input element for the specified base color
-            var colorPickerInput = $('input[name=' + baseColor + '_base_color]');
-
-            // Update the color picker value
-            colorPickerInput.val(newColor).trigger('input');
-
-            // Update the previous color value
-            previousColors[baseColor] = newColor;
-        }
-    }
-
-    // Function to initialize color picker values
-    function initializeColorPickers() {
-        updateColorPicker('primary');
-        updateColorPicker('secondary');
-        updateColorPicker('tertiary');
-    }
-
-    // Call the function to initialize color pickers
-    initializeColorPickers();
-
-    // Event listener for color picker changes
-    $('input[type="color"]').on('input', function () {
-        // Get the base color from the color picker name
-        var baseColor = $(this).attr('name').replace('_base_color', '');
-
-        // Get the new color value from the color picker
-        var newColor = $(this).val();
-
-        // Update the color pickers for other base colors with previous values
-        Object.keys(previousColors).forEach(function (color) {
-            if (color !== baseColor) {
-                var colorPickerInput = $('input[name=' + color + '_base_color]');
-                colorPickerInput.val(previousColors[color]).trigger('input');
-            }
-        });
-
-        // Update the color pickers for the current base color with the new value
-        updateColorPicker(baseColor);
-    });
-});
+//     // Hook into the color picker change event
+//     $('.wp-color-picker').on('input', function() {
+//         // Update the color picker value to trigger the change event
+//         $(this).val($(this).val()).trigger('change');
+//     });
+// });

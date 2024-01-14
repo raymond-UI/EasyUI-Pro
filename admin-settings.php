@@ -5,7 +5,7 @@ function easyui_pro_generate_color_palette($base_color) {
     $palette = [];
 
     // Define the number of tones in the palette
-    $num_tones = 15;
+    $num_tones = 20;
 
     // Convert base color to RGB
     list($r, $g, $b) = sscanf($base_color, "#%02x%02x%02x");
@@ -34,16 +34,30 @@ function easyui_pro_generate_color_palette($base_color) {
 }
 
 
-// Enqueue the custom JavaScript file
-function easyui_pro_enqueue_custom_script() {
-    wp_enqueue_script('easyui-pro-custom-script', plugin_dir_url(__FILE__) . 'custom-admin-script.js', array('jquery'), null, true);
-}
+// // Enqueue the custom JavaScript file
+// function easyui_pro_enqueue_custom_script() {
+//     wp_enqueue_script('easyui-pro-custom-script', plugin_dir_url(__FILE__) . 'custom-admin-script.js', array('jquery', 'wp-color-picker'), null, true);
 
+//     // Pass initial color values to the script
+//     wp_localize_script('easyui-pro-custom-script', 'easyuiProInitialColors', array(
+//         'primary' => get_option('previous_primary_color', '#ff0000'),
+//         'secondary' => get_option('previous_secondary_color', '#00ff00'),
+//         'tertiary' => get_option('previous_tertiary_color', '#0000ff'),
+//     ));
+
+//     // Enqueue the color picker script
+//     wp_enqueue_script('wp-color-picker');
+//     // wp_enqueue_style('wp-color-picker');
+
+// 	// Enqueue additional script to handle color picker changes
+// 	wp_enqueue_script('easyui-pro-color-picker-handler', plugin_dir_url(__FILE__) . 'color-picker-handler.js', array('jquery', 'wp-color-picker', 'easyui-pro-custom-script'), null, true);
+	
+// }
 
 // Admin settings page
 function easyui_pro_settings_page() {
 ?>
-<div class="wrap">
+<div class="wrap reset">
 	<h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 	<form method="post" action="options.php">
 		<?php
@@ -54,10 +68,6 @@ function easyui_pro_settings_page() {
 	</form>
 </div>
 <?php
-
-// Enqueue the custom JavaScript file
-add_action('admin_enqueue_scripts', 'easyui_pro_enqueue_custom_script');
-
 }
 
 // Register settings
@@ -77,15 +87,17 @@ function easyui_pro_settings_fields() {
 
 // Color field callback
 function easyui_pro_color_field($args) {
-	$base_color_option = get_option($args['base_color'] . '_base_color', 'ff0000');
-	$base_color = '#' . sanitize_hex_color($base_color_option);
-	?>
-	<input type="color" name="<?php echo $args['base_color']; ?>_base_color" value="<?php echo esc_attr($base_color); ?>">
-	<?php
+    $base_color_option = get_option($args['base_color'] . '_base_color', 'ff0000');
+    $base_color = sanitize_hex_color($base_color_option);
+    ?>
+    <input type="color" id="color-preview" name="<?php echo esc_attr($args['base_color']); ?>_base_color" value="<?php echo esc_attr($base_color); ?>">
+    <?php
 }
+
 
 // Dynamic CSS generation
 function easyui_pro_dynamic_styles() {
+
 	$primary_base_color = get_option('primary_base_color', '#ff0000');
 	$secondary_base_color = get_option('secondary_base_color', '#00ff00');
 	$tertiary_base_color = get_option('tertiary_base_color', '#0000ff');
@@ -125,8 +137,14 @@ function easyui_pro_dynamic_styles() {
 
 	// Enqueue the dynamic stylesheet
 	wp_enqueue_style('easyui-pro-dynamic-styles', $upload_dir['baseurl'] . '/easyui-pro-dynamic.css');
+
+	// Update previous color values in WordPress options
+	update_option('previous_primary_color', $primary_base_color);
+	update_option('previous_secondary_color', $secondary_base_color);
+	update_option('previous_tertiary_color', $tertiary_base_color);
 }
 
+// add_action('admin_enqueue_scripts', 'easyui_pro_enqueue_custom_script');
 add_action('admin_enqueue_scripts', 'easyui_pro_dynamic_styles');
 add_action('admin_init', 'easyui_pro_register_settings');
 add_action('admin_init', 'easyui_pro_settings_fields');
